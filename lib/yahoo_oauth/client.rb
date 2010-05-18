@@ -4,18 +4,15 @@ module YahooOAuth
   class Client
     
     def initialize(options = {})
-      @application_id = options[:application_id]
-      @application_secret = options[:application_secret]
+      @consumer_id = options[:consumer_key]
+      @consumer_secret = options[:consumer_secret]
       @callback = options[:callback]
       @token = options[:token]
     end
   
     def authorize_url(options = {})
-      options[:scope] ||= 'offline_access,publish_stream'
-      consumer.web_server.authorize_url(
-        :redirect_uri => options[:callback] || @callback,
-        :scope => options[:scope]
-      )
+      request_token = consumer.get_request_token(:oauth_callback => options[:callback] || @callback)
+      return request_token.authorize_url
     end
     
     def authorize(options = {})
@@ -29,15 +26,16 @@ module YahooOAuth
     
     private
       def consumer
-        @consumer ||= OAuth::Client.new(
-          @application_id,
-          @application_secret,
-          { :site=>"https://graph.facebook.com" }
-        )
+        @consumer ||= OAuth::Consumer.new(@consumer_id,
+                                          @consumer_secret,
+                                          :site => "https://api.login.yahoo.com",
+                                          :request_token_path => '/oauth/v2/get_request_token', 
+                                          :access_token_path => '/oauth/v2/get_token', 
+                                          :authorize_path => '/oauth/v2/request_auth')
       end
 
       def access_token
-        OAuth2::AccessToken.new(consumer, @token)
+        OAuth::AccessToken.new(consumer, @token)
       end
       
       def _get(url)
