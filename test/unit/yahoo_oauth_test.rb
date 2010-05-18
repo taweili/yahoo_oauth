@@ -1,7 +1,11 @@
 require 'test_helper'
 
 class YahooOauthTest < Test::Unit::TestCase
-  def test_fail
-    assert(false, 'Assertion was false.')
+  context "A User instance" do
+    setup do
+    end
+
+    should "return its full name" do
+    end
   end
 end
