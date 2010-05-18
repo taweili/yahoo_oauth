@@ -9,5 +9,6 @@ Echoe.new('yahoo_oauth', '0.1.0') do |p|
   p.author         = "David Li"
   p.email          = "taweili@yahoo.com"
   p.ignore_pattern = ["tmp/*", "script/*"]
+  p.runtime_dependencies = ["oauth"]
   p.development_dependencies = []
 end
