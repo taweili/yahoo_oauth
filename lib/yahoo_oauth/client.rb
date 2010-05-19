@@ -44,7 +44,7 @@ module YahooOAuth
     
     def refresh_access_token
       @request_token = OAuth::RequestToken.new(consumer, @token, @secret)
-      @access_token = @request_token.get_access_token
+      @access_token = @request_token.get_access_token({:oauth_session_handle => YAHOO_OAUTH_SESSION_HANDLE_EXPIRED})
       @token = @access_token.token
       @secret = @access_token.secret
       @access_token

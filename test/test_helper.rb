@@ -17,4 +17,4 @@ require 'yahoo_config'
 YAHOO_OAUTH_CREDENTIALS = {
   :consumer_key => YAHOO_CONSUMER_KEY,
   :consumer_secret => YAHOO_SECRET_KEY
-}
+} if !defined? YAHOO_OAUTH_CREDENTIALS

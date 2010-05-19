@@ -38,7 +38,6 @@ class ClientTest < Test::Unit::TestCase
     
     should "use refresh to fix the problem" do
       resp = @client.refresh_access_token
-      puts "#### #{resp.inspect}"
       # @client.tinyusercard
     end
   end
