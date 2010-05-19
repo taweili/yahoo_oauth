@@ -25,7 +25,13 @@ module YahooOAuth
     end
     
     def authorized?
-      access_token.get("http://social.yahooapis.com/v1/me/guid?format=json")
+      authorized = false
+      begin
+        access_token.get("http://social.yahooapis.com/v1/me/guid?format=json")
+        authorized = true
+      rescue OAuth::Problem
+      end
+      authorized
     end
   
     private

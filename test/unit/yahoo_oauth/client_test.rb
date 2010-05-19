@@ -1,9 +1,8 @@
 require 'test_helper'
-require 'yahoo_oauth'
-require 'yahoo_config'
+
 
 class ClientTest < Test::Unit::TestCase
-  context "A Client instance" do
+  context "Client" do
     setup do
     end
 
@@ -13,10 +12,16 @@ class ClientTest < Test::Unit::TestCase
                                       :callback => YAHOO_OAUTH_CALLBACK)
       url = client.authorize_url
       assert url
+      assert url.include? "https://api.login.yahoo.com/oauth/v2/request_auth?oauth_token="
+    end
+    
+    should "not be authorized without token and secret" do
+      client = YahooOAuth::Client.new(:callback => YAHOO_OAUTH_CALLBACK)
+      assert !client.authorized?
     end
     
     should "get a authorized client with token and secert" do 
-      client = YahooOAuth::Client.new(:token => YAHOO_ACCESS_TOKEN, :secret => YAHOO_ACCESS_SECRET, :callback => YAHOO_OAUTH_CALLBACK)
+      client = YahooOAuth::Client.new(:token => YAHOO_ACCESS_TOKEN, :secret => YAHOO_ACCESS_SECRET)
       assert client.authorized?
     end
   end
