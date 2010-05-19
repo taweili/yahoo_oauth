@@ -3,8 +3,6 @@ require 'test_helper'
 
 class ClientTest < Test::Unit::TestCase
   context "Client" do
-    setup do
-    end
 
     should "get a authorize_url" do
       client = YahooOAuth::Client.new(:consumer_key => YAHOO_CONSUMER_KEY,
@@ -26,6 +24,25 @@ class ClientTest < Test::Unit::TestCase
     end
   end
   
+  context "Expired Client" do
+    setup do
+      @client = YahooOAuth::Client.new(:token => YAHOO_ACCESS_TOKEN_EXPIRED, :secret => YAHOO_ACCESS_SECRET_EXPIRED)
+    end
+
+    should "get a OAuth::Problem with token_expired when invoking methods" do
+      exp =  assert_raise OAuth::Problem do 
+        @client.tinyusercard
+      end
+      assert_equal exp.problem, "token_expired"
+    end
+    
+    should "use refresh to fix the problem" do
+      resp = @client.refresh_access_token
+      puts "#### #{resp.inspect}"
+      # @client.tinyusercard
+    end
+  end
+  
   context "Social Directory API" do 
     setup do
       @client = YahooOAuth::Client.new(:token => YAHOO_ACCESS_TOKEN, :secret => YAHOO_ACCESS_SECRET)
@@ -34,6 +51,11 @@ class ClientTest < Test::Unit::TestCase
     should "get the guid of the authorized user" do
       guid = @client.guid
       assert guid
+    end
+    
+    should "get the tinyusercard of the authorized user" do
+      res = @client.tinyusercard
+      puts res
     end
   end
   

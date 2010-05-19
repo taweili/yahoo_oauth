@@ -41,6 +41,14 @@ module YahooOAuth
       end
       authorized
     end
+    
+    def refresh_access_token
+      @request_token = OAuth::RequestToken.new(consumer, @token, @secret)
+      @access_token = @request_token.get_access_token
+      @token = @access_token.token
+      @secret = @access_token.secret
+      @access_token
+    end
   
     private
       def consumer
