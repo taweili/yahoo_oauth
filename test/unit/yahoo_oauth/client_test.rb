@@ -56,6 +56,11 @@ class ClientTest < Test::Unit::TestCase
       res = @client.tinyusercard
       assert_equal res["profile"]["guid"], YAHOO_XOAUTH_YAHOO_GUID
     end
+    
+    should "get the usercard of the authorized user" do
+      res = @client.usercard
+      assert_equal res["profile"]["guid"], YAHOO_XOAUTH_YAHOO_GUID
+    end
   end
   
 end

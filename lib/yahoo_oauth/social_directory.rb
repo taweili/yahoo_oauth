@@ -19,7 +19,7 @@ module YahooOAuth
     end
     
     #
-    # Tinyusercard
+    # Tinyusercard Profile
     # http://developer.yahoo.com/social/rest_api_guide/tiny-profile-resource.html
     #
     def tinyusercard(_guid = nil)
@@ -27,6 +27,15 @@ module YahooOAuth
       res = JSON.parse(access_token.get("http://social.yahooapis.com/v1/user/#{_guid}/profile/tinyusercard?format=json").body)
     end
     
+    #
+    # Usercard Profile
+    # http://developer.yahoo.com/social/rest_api_guide/usercard-resource.html
+    #
+    def usercard(_guid = nil)
+      _guid ||= guid
+      res = JSON.parse(access_token.get("http://social.yahooapis.com/v1/user/#{_guid}/profile/usercard?format=json").body)
+    end
+        
     private 
     
     def _get_guid
