@@ -38,7 +38,7 @@ class ClientTest < Test::Unit::TestCase
     
     should "use refresh to fix the problem" do
       resp = @client.refresh_access_token
-      # @client.tinyusercard
+      assert = @client.tinyusercard
     end
   end
   
@@ -54,7 +54,7 @@ class ClientTest < Test::Unit::TestCase
     
     should "get the tinyusercard of the authorized user" do
       res = @client.tinyusercard
-      puts res
+      assert_equal res["profile"]["guid"], YAHOO_XOAUTH_YAHOO_GUID
     end
   end
   
