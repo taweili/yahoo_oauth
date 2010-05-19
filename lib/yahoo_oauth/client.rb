@@ -4,8 +4,8 @@ module YahooOAuth
   class Client
     
     def initialize(options = {})
-      options = YAHOO_OAUTH_CREDENTIALS.merge(options)
-      @consumer_id = options[:consumer_key]
+      options = ::YAHOO_OAUTH_CREDENTIALS.merge(options)
+      @consumer_key = options[:consumer_key]
       @consumer_secret = options[:consumer_secret]
       @callback = options[:callback]
       @token = options[:token]
@@ -27,14 +27,10 @@ module YahooOAuth
     def authorized?
       access_token.get("http://social.yahooapis.com/v1/me/guid?format=json")
     end
-
-    def access_token
-      @access_token ||= OAuth::AccessToken.new(consumer, @token, @secret)
-    end
-    
+  
     private
       def consumer
-        @consumer ||= OAuth::Consumer.new(@consumer_id,
+        @consumer ||= OAuth::Consumer.new(@consumer_key,
                                           @consumer_secret,
                                           :site => "https://api.login.yahoo.com",
                                           :request_token_path => '/oauth/v2/get_request_token', 
@@ -42,6 +38,10 @@ module YahooOAuth
                                           :authorize_path => '/oauth/v2/request_auth')
       end
       
+      def access_token
+        @access_token ||= OAuth::AccessToken.new(consumer, @token, @secret)
+      end
+            
       def _get(url)
         oauth_response = access_token.get(url)
         JSON.parse(oauth_response)
