@@ -26,4 +26,15 @@ class ClientTest < Test::Unit::TestCase
     end
   end
   
+  context "Social Directory API" do 
+    setup do
+      @client = YahooOAuth::Client.new(:token => YAHOO_ACCESS_TOKEN, :secret => YAHOO_ACCESS_SECRET)
+    end
+    
+    should "get the guid of the authorized user" do
+      guid = @client.guid
+      assert guid
+    end
+  end
+  
 end

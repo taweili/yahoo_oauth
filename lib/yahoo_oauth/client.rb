@@ -1,4 +1,12 @@
-require 'yahoo_oauth/objects'
+#
+# A Ruby Library for Yahoo! Social API
+#
+# Author::    David Li (mailto:taweili@yahoo.com)
+# Copyright:: Copyright (c) 2010 David Li
+# License::   LGPL
+
+# Provides implementation of Yahoo's OAuth
+# http://developer.yahoo.com/oauth/ 
 
 module YahooOAuth
   class Client
