@@ -49,6 +49,13 @@ module YahooOAuth
       @secret = @access_token.secret
       @access_token
     end
+    
+    def save_token(options = {})
+      filepath = options[:filepath] || 'token.yml'
+      File.open(filepath, 'w') do |file|
+        file.puts(@access_token.to_yaml)
+      end
+    end
   
     private
       def consumer
