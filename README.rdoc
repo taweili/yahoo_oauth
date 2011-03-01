@@ -1,40 +1,40 @@
 Script example to create and refresh token:
 
-    require 'rubygems'
-    require 'yahoo_oauth' # :git => git://github.com/alx/yahoo_oauth.git
-    require 'yaml'
+  require 'rubygems'
+  require 'yahoo_oauth' # :git => git://github.com/alx/yahoo_oauth.git
+  require 'yaml'
 
-    @config = YAML.load_file("config.yml")
+  @config = YAML.load_file("config.yml")
 
-    @del_account = @config['delicious']
+  @del_account = @config['delicious']
 
-    YAHOO_OAUTH_CREDENTIALS = {
-      :consumer_key => @del_account['API_KEY'],
-      :consumer_secret => @del_account['SHARED_SECRET']
-    }
+  YAHOO_OAUTH_CREDENTIALS = {
+    :consumer_key => @del_account['API_KEY'],
+    :consumer_secret => @del_account['SHARED_SECRET']
+  }
 
-    unless File.exists? 'token.yml'
-  
-      client = YahooOAuth::Client.new(:callback => 'http://tetalab.org/oauth_verifier.php')
-  
-      p "1. open this url in your browser: #{client.authorize_url}"
-      p "2. complete authorization process"
-      p "3. enter verifier key in console: "
-      oauth_verifier = gets.chomp
-  
-      client.authorize :oauth_verifier => oauth_verifier
-  
-      unless client.authorized?
-        p "wrong verifier key, please try again"
-        exit
-      end
-  
-      client.save_token
+  unless File.exists? 'token.yml'
+
+    client = YahooOAuth::Client.new(:callback => 'http://tetalab.org/oauth_verifier.php')
+
+    p "1. open this url in your browser: #{client.authorize_url}"
+    p "2. complete authorization process"
+    p "3. enter verifier key in console: "
+    oauth_verifier = gets.chomp
+
+    client.authorize :oauth_verifier => oauth_verifier
+
+    unless client.authorized?
+      p "wrong verifier key, please try again"
+      exit
     end
 
-    YAHOO_TOKEN = YAML.load_file('token.yml')
-    YAHOO_OAUTH_SESSION_HANDLE_EXPIRED = YAHOO_TOKEN.params["oauth_session_handle"]
+    client.save_token
+  end
 
-    client = YahooOAuth::Client.new(:token => YAHOO_TOKEN.token, :secret => YAHOO_TOKEN.secret)
-    client.refresh_access_token
-    client.authorized?
+  YAHOO_TOKEN = YAML.load_file('token.yml')
+  YAHOO_OAUTH_SESSION_HANDLE_EXPIRED = YAHOO_TOKEN.params["oauth_session_handle"]
+
+  client = YahooOAuth::Client.new(:token => YAHOO_TOKEN.token, :secret => YAHOO_TOKEN.secret)
+  client.refresh_access_token
+  client.authorized?
